@@ -10,7 +10,7 @@ namespace CountDownXamarinForms.ViewModels
     public class CountDownViewModel : BaseViewModel
     {
         private CountDown countDown;
-        private double seconds = 60;
+        private double seconds = 10;
 
         private double _countProgress;
         public double CountProgress
@@ -38,7 +38,7 @@ namespace CountDownXamarinForms.ViewModels
 
         private void AddTime()
         {
-            countDown?.AddCountProgress(0.10);
+            countDown?.AddCountProgress(0.50);
         }
 
         private void UpdateCount(double update)

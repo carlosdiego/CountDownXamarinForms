@@ -29,25 +29,20 @@ namespace CountDownXamarinForms.Services
         /// <param name="_callbackEndTime">Callback method finish</param>
         public CountDown(TimeSpan TotalTime, TimeSpan Interval, Action<double> _callbackProgress, Action _callbackEndTime)
         {
-
             double step = Interval.TotalMilliseconds / TotalTime.TotalMilliseconds;
 
             _cancellationTokenSource = new CancellationTokenSource();
 
-            var cts = _cancellationTokenSource;
-
             Device.StartTimer(Interval, () =>
             {
-                if (cts.IsCancellationRequested)
+                if (_cancellationTokenSource.IsCancellationRequested)
                 {
                     return false;
                 }
 
                 if (countProgress < 1)
                 {
-                    var countdown = countProgress += step;
-                    Device.BeginInvokeOnMainThread(() => countProgress += step);
-                    _callbackProgress.Invoke(countdown);
+                    Device.BeginInvokeOnMainThread(() => _callbackProgress.Invoke(countProgress += step));
                     return true;
                 }
                 else
@@ -61,9 +56,9 @@ namespace CountDownXamarinForms.Services
         }
 
         /// <summary>
-        /// Add Count Progress
+        /// Adds progress percentage.
         /// </summary>
-        /// <param name="_countProgress">double ex.: 0.10</param>
+        /// <param name="_countProgress">double ex.: 0.10 = 10%, 0.50 = 50%, 1.00 = 100%</param>
         public void AddCountProgress(double _countProgress)
         {
             this.countProgress -= _countProgress;
